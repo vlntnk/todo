@@ -188,4 +188,6 @@ def logout():
     flash('You are not logged in')
     return redirect(url_for('index'))
 
-app.run(debug=False)
+
+if __name__ == '__main__':
+    app.run(debug=False)

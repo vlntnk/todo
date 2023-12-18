@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/index.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz@9..40&display=swap');
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div class="conteiner">
+        <header class="header">
+            <!-- <div class="header_item"></div> -->
+            <div cass="MY_TODO">MY TODO</div>
+            <div class="header_item">
+                <button class="logout-btn" id="logout_btn">Log out</button>
+                <button class="autho-btn" id="autho_btn">Log in</button>
+                <button class="registr-btn" id="registr_btn">Sign up</button>
+            </div>
+        </header>
+        <main class="main">
+            <div class="todo">
+                <form action="/done" id="done_form" method="POST">
+                <div class="TODO">
+                    <div class="left_items">
+                        <div class="img"><img src="static/Icon.svg" alt=""></div>
+                        <span>To-Do</span>
+                    </div>
+                    <div class="todo_buttons">
+                        <button type="submit" class="done_btn" form="done_form" title="delete done tasks"><img src="static/Done.svg" alt=""></button>
+                        <button class="new_task" id="add_task" type="button">Add+</button>
+                    </div>
+                </div>
+                 {% for task in Tasks %}
+                <div class="todo-item">
+                    <div class="title">{{task.title}}</div>
+                        <label for="{{task.id}}" class="button">
+                            <input class="button_input" type="checkbox" id="{{task.id}}" name="done_checkbox" value="{{task.id}}">
+                            <span class="button_slider" title="mark as done"></span>
+                        </label>
+                    <div class="properties">
+                        <input type="checkbox" class="hardness_input" id="l{{task.id}}">
+                            <label for="l{{task.id}}" class="hardness {{task.hardness}}"></label>
+                        <input type="checkbox" class="hardness_input" id="m{{task.id}}">
+                            <label for="m{{task.id}}" class="hardness {{task.hardness}}"></label>
+                        <input type="checkbox" class="hardness_input" id="h{{task.id}}">
+                            <label for="h{{task.id}}" class="hardness {{task.hardness}}"></label>
+                        <div class="day_{{task.hardness}}">
+                            <span class="day_span">{{task.due_date}}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                </form>
+
+                <div class="popup" id="popup">
+                    <div class="popup_box">
+                        <form action="/add_task" method="POST"  id="addtask" name="addtask" novalidate></form>
+                            <input type="text" class="input_title" id="input_title" name="title" form="addtask" placeholder="Type your task">
+                                <label for="input_title" class="label_title"></label>
+                            <div class="input_hardness">
+                                <h3>How much hard is it?</h3>
+                                <div class="form_hardness">
+                                    <input type="radio" name="hardness" id="low_radio" class="radio_hardness" value="low_radio"  form="addtask">
+                                        <label for="low_radio" class="label_hardness"></label>
+                                        <span>Low</span>
+                                    <input type="radio" name="hardness" id="medium_radio" class="radio_hardness" value="medium_radio"  form="addtask">
+                                        <label for="medium_radio" class="label_hardness"></label>
+                                        <span>Medium</span>
+                                    <input type="radio" name="hardness" id="hard_radio" class="radio_hardness" value="hard_radio" form="addtask">
+                                        <label for="hard_radio" class="label_hardness"></label>
+                                        <span>High</span>
+                                </div>
+                            </div>
+                            <div class="input_duedate">
+                                <span>Choose the due date</span>
+                                <div>
+                                    <input type="radio" name="duedate" id="Mon" class="radio_duedate" value="Mon" form="addtask">
+                                        <label for="Mon" class="label_duedate">Mon</label>
+                                    <input type="radio" name="duedate" id="Tue" class="radio_duedate" value="Tue" form="addtask">
+                                        <label for="Tue" class="label_duedate">Tue</label>
+                                    <input type="radio" name="duedate" id="Wed" class="radio_duedate"value="Wed" form="addtask">
+                                        <label for="Wed" class="label_duedate">Wed</label>
+                                    <input type="radio" name="duedate" id="Thu" class="radio_duedate" value="Thu" form="addtask">
+                                        <label for="Thu" class="label_duedate">Thu</label>
+                                    <input type="radio" name="duedate" id="Fri" class="radio_duedate" value="Fri" form="addtask">
+                                        <label for="Fri" class="label_duedate">Fri</label>
+                                    <input type="radio" name="duedate" id="Sat" class="radio_duedate" value="Sat" form="addtask">
+                                        <label for="Sat" class="label_duedate">Sat</label>
+                                    <input type="radio" name="duedate" id="Sun" class="radio_duedate" value="Sun" form="addtask">
+                                        <label for="Sun" class="label_duedate">Sun</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="add_task_btn"  form="addtask" >Add new task</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="autho" id="autho">
+                <div class="autho_box">
+                    <span class="login">Log in</span>
+                    <form action="{{url_for('autho')}}" method="POST">
+                        <div class="autho_box_form">
+                            <input type="text" class="login_input" id="login_autho" name="login" placeholder="login">
+                                <label for="login_autho" class="login_label"></label>
+                            <input type="text" class="psw_input" id="psw_autho" name="psw" placeholder="password">
+                                <label for="psw_autho" class="psw_label"></label>
+                            <button type="submit" class="autho_submit" formmethod="POST" formaction="/login">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="registr" id="registr">
+                <div class="registr_box">
+                    <span class="login">Sign up</span>
+                    <form action="/registr" method="POST">
+                        <input type="text" class="login_input" id="login_registr" name="login" placeholder="login">
+                            <label for="login_registr" class="login_label"></label>
+                        <input type="password" class="psw_input" id="psw_registr" name="psw" placeholder="password">
+                            <label for="psw_registr" class="psw_label"></label>
+                        <button type="submit" class="registr_submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="logout" id="logout">
+                <div class="logout_box">
+                    <span class="login">Log out</span>
+                    <form action="/logout" method="POST">
+                        <input type="text" class="login_input" id="login_logout" name="login" placeholder="login">
+                            <label for="login_logout" class="login_label"></label>
+                        <input type="password" class="psw_input" id="psw_logout" name="psw" placeholder="password">
+                            <label for="psw_logout" class="psw_label"></label>
+                        <button type="submit" class="logout_submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+            {% for msg in get_flashed_messages() %}
+            <div class="flash" id="flash">
+                <div class="flash_box">{{msg}}</div>
+            </div>
+            {% endfor %}
+
+        </main>
+    </div>
+
+    <script defer src="static/index.js"></script>
+    
+</body>
+</html>

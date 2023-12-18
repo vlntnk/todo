@@ -143,7 +143,7 @@ def registr():
         try:
             id = str(uuid.uuid4())
             login = request.form['login']
-            if Users.query.filter_by(login=login).count() ==0:
+            if Users.query.filter_by(login=login).count() == 0:
                 hashed_psw = generate_password_hash(request.form['psw'])
                 user = Users(id=id, login=login, psw=hashed_psw)
                 db.session.add(user)
@@ -152,7 +152,8 @@ def registr():
                 loggeduser = UserLogin().create(user)
                 login_user(loggeduser)
                 flash('You have been signed up and logged in')
-            flash('Such user already exists')
+            else:
+                flash('Such user already exists')
         except:
             db.session.rollback()
             flash('Registration error')

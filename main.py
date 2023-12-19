@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, login_required, current_user, UserMixin, logout_user
 import uuid
+import re
 
 
 app = Flask(__name__)
@@ -143,17 +144,22 @@ def registr():
         try:
             id = str(uuid.uuid4())
             login = request.form['login']
-            if Users.query.filter_by(login=login).count() == 0:
-                hashed_psw = generate_password_hash(request.form['psw'])
-                user = Users(id=id, login=login, psw=hashed_psw)
-                db.session.add(user)
-                db.session.flush()
-                db.session.commit()
-                loggeduser = UserLogin().create(user)
-                login_user(loggeduser)
-                flash('You have been signed up and logged in')
+            if re.findall(r'\d', login) and re.findall(r'\D', login) and len(login)>=8:
+                if Users.query.filter_by(login=login).count() == 0:
+                    hashed_psw = generate_password_hash(request.form['psw'])
+                    user = Users(id=id, login=login, psw=hashed_psw)
+                    db.session.add(user)
+                    db.session.flush()
+                    db.session.commit()
+                    loggeduser = UserLogin().create(user)
+                    login_user(loggeduser)
+                    flash('You have been signed up and logged in')
+                else:
+                    flash('Such user already exists')
             else:
-                flash('Such user already exists')
+                flash('Weak password! '
+                      'It must contain 0-9 and and any letter. '
+                      'At least 8 symbols.')
         except:
             db.session.rollback()
             flash('Registration error')

@@ -144,7 +144,7 @@ def registr():
         try:
             id = str(uuid.uuid4())
             login = request.form['login']
-            if re.findall(r'\d', login) and re.findall(r'\D', login) and len(login)>=8:
+            if re.findall(r'\d', login) and re.findall(r'\D', login) and re.findall(r'\w{8,}'):
                 if Users.query.filter_by(login=login).count() == 0:
                     hashed_psw = generate_password_hash(request.form['psw'])
                     user = Users(id=id, login=login, psw=hashed_psw)

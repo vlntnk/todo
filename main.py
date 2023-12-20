@@ -144,9 +144,10 @@ def registr():
         try:
             id = str(uuid.uuid4())
             login = request.form['login']
-            if re.findall(r'\d', login) and re.findall(r'\D', login) and re.findall(r'\w{8,}'):
+            password = request.form['psw']
+            if re.findall(r'(?=.*[\d])(?=.*[\D]).{8,}', password):
                 if Users.query.filter_by(login=login).count() == 0:
-                    hashed_psw = generate_password_hash(request.form['psw'])
+                    hashed_psw = generate_password_hash(password)
                     user = Users(id=id, login=login, psw=hashed_psw)
                     db.session.add(user)
                     db.session.flush()

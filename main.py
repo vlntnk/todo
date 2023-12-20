@@ -61,6 +61,7 @@ def get_user(Users, user_id):
 
 class UserLogin(UserMixin):
 
+
     def FromDB(self, Users, user_id):
         self.__user = get_user(Users, user_id)
         return self
@@ -100,7 +101,6 @@ def index():
 
 @app.route('/add_task', methods=['POST', 'GET'])
 def add_task():
-    print(session)
     if request.method == 'POST':
         if current_user.is_authenticated:
             userid = session['id']
